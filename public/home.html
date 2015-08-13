@@ -1,0 +1,28 @@
+<div class="row">
+	<div class="col-md-8" id="svg-canvas"></div>
+
+	<div class="col-md-4" id="song-panel" ng-show="true">
+		<div class="info-img">
+			<div class="img-link">
+				<img src="{{imgLink}}">
+			</div>
+			<div class="song-related-info">
+				<h3>{{songName}}</h3>
+				<h4>{{artistName}}</h4>
+				<h4>{{album}}</h4>
+				<h5>{{year}}</h5>
+			</div>
+		</div>
+
+		<div class="song-link">
+			<h2>{{sampleElement}}</h2>
+			<iframe width="350" height="275" src="{{songLink}}"></iframe>
+		</div>
+
+		<div class="label-genre-yr">
+			<h3>{{recLabel}}</h3>
+			<h3>{{genre}}</h3>
+			<h3></h3>
+		</div>
+	</div>
+</div>
