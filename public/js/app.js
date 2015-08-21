@@ -15,6 +15,9 @@ app.config(['$routeProvider', function($routeProvider) {
 
 app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $sce) {
 	$http.get('/home').then(function(allNodes){
+		if(!allNodes.length === 0){
+			console.log("damn");
+		}
 		
 		var nodeArr = [], linkArr = [], sliceStart;
 		allNodes.data.forEach(function(node, idx){
