@@ -14,172 +14,190 @@ app.config(['$routeProvider', function($routeProvider) {
 
 
 app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $sce) {
-	$http.get('/home').then(function(allNodes){
-		if(!allNodes.length === 0){
-			console.log("damn");
-		}
-		
-		var nodeArr = [], linkArr = [], sliceStart;
-		allNodes.data.forEach(function(node, idx){
-			node.level = "lev" + idx, node.isParent = true;
-	
-			node.samplesCollection.forEach(function(aNode){
-        		aNode.level = "lev" + idx; 
-        	});
-			nodeArr.push(node);
-			sliceStart = nodeArr.length;
+	$scope.query;
 
-			Array.prototype.splice.apply(nodeArr, [sliceStart, 0].concat(node.samplesCollection));
-			for(var i = sliceStart; i < nodeArr.length; i++) {
-				var aLink = {
-					'source': sliceStart - 1,
-					'target': i,
-					'weight': 3
+	$scope.getArtist = function() {
+		d3.select("svg").remove();
+		var artistQ = $scope.query.split(" ").join("-");
+		$http.post('/home', {artist: artistQ}).then(function(allNodes){
+			
+			var nodeArr = [], linkArr = [], sliceStart;
+			allNodes.data.forEach(function(node, idx){
+				node.level = "core" + idx, node.isParent = true;		
+				node.samplesCollection.forEach(function(aNode){
+	        		aNode.level = idx; 
+	        	});
+				nodeArr.push(node);
+				sliceStart = nodeArr.length;
+
+				Array.prototype.splice.apply(nodeArr, [sliceStart, 0].concat(node.samplesCollection));
+				for(var i = sliceStart; i < nodeArr.length; i++) {
+					var aLink = {
+						'source': sliceStart - 1,
+						'target': i,
+						'weight': 3
+					}
+					linkArr.push(aLink);
 				}
-				linkArr.push(aLink);
-			}
-		});
+			});
 
-		var nodes = nodeArr;
-		var links = linkArr;
+			var nodes = nodeArr;
+			var links = linkArr;
 
-		  var width = 823, height = 600;
+			var width = 823, height = 600;
 
-		  var color = d3.scale.category20();
+			var color = d3.scale.category20();
 
-		  var fisheye = d3.fisheye.circular()
-		      .radius(120);
+			var fisheye = d3.fisheye.circular()
+				.radius(120);
 
-		  var force = d3.layout.force()
-		      .charge(-150)
-		      .linkDistance(35)
-		      .size([width, height]);
+			var force = d3.layout.force()
+				.charge(-150)
+				.linkDistance(35)
+				.size([width, height]);
 
-		  var svg = d3.select("#svg-canvas").append("svg")
-		      .attr("width", width)
-		      .attr("height", height);
+			  var svg = d3.select("#svg-canvas").append("svg")
+			      .attr("width", width)
+			      .attr("height", height);
 
-		  svg.append("rect")
-		      .attr("class", "background")
-		      .attr("width", width)
-		      .attr("height", height);
+			  svg.append("rect")
+			      .attr("class", "background")
+			      .attr("width", width)
+			      .attr("height", height);
 
-		    var n = nodes.length;
+			    var n = nodes.length;
 
-		    force.nodes(nodes).links(links);
+			    force.nodes(nodes).links(links);
 
-		    // Initialize the positions deterministically, for better results.
-		    // nodes.forEach(function(d, i) { d.x = d.y = width / n * i; });
+			    // Initialize the positions deterministically, for better results.
+			    // nodes.forEach(function(d, i) { d.x = d.y = width / n * i; });
 
-		    // Run the layout a fixed number of times.
-		    // The ideal number of times scales with graph complexity.
-		    // Of course, don't run too long—you'll hang the page!
-		    force.start();
-		    for (var i = n; i > 0; --i) force.tick();
-		    force.stop();
+			    // Run the layout a fixed number of times.
+			    // The ideal number of times scales with graph complexity.
+			    // Of course, don't run too long—you'll hang the page!
+			    force.start();
+			    for (var i = n; i > 0; --i) force.tick();
+			    force.stop();
 
-		    // Center the nodes in the middle. 
-		    var ox = 0, oy = 0;
-		    nodes.forEach(function(d) { ox += d.x, oy += d.y; });
-		    ox = ox / n - width / 2, oy = oy / n - height / 2;
-		    nodes.forEach(function(d) { d.x -= -2, d.y -= -6; });
+			    // Center the nodes in the middle. 
+			    var ox = 0, oy = 0;
+			    nodes.forEach(function(d) { ox += d.x, oy += d.y; });
+			    ox = ox / n - width / 2, oy = oy / n - height / 2;
+			    nodes.forEach(function(d) { d.x -= -2, d.y -= -6; });
 
-		    var link = svg.selectAll(".link")
-		        .data(links)
-		      	.enter().append("line")
-		        .attr("class", "link")
-		        .attr("x1", function(d) { return d.source.x; })
-		        .attr("y1", function(d) { return d.source.y; })
-		        .attr("x2", function(d) { return d.target.x; })
-		        .attr("y2", function(d) { return d.target.y; })
-		        .attr("stroke", "grey")
-		        .style("stroke-width", function(d) { return 2; });
+			    var link = svg.selectAll(".link")
+			        .data(links)
+			      	.enter().append("line")
+			        .attr("class", "link")
+			        .attr("x1", function(d) { return d.source.x; })
+			        .attr("y1", function(d) { return d.source.y; })
+			        .attr("x2", function(d) { return d.target.x; })
+			        .attr("y2", function(d) { return d.target.y; })
+			        .attr("stroke", "grey")
+			        .style("stroke-width", function(d) { return 2; });
 
-		    var node = svg.selectAll(".node")
-		        .data(nodes)
-		      	.enter().append("circle")
-		        .attr("class", "node")
-		        .attr("id", function(d){return d.level})
-		        .attr("cx", function(d) { return d.x; })
-		        .attr("cy", function(d) { return d.y; })
-		        .attr("r", function(d){
-		        	if(d.samplesCollection){return 5;} 
-	        		else {return 3.5;}
+			    var node = svg.selectAll(".node")
+			        .data(nodes)
+			      	.enter().append("circle")
+			        .attr("class", "node")
+			        .attr("id", function(d){return d.level})
+			        .attr("cx", function(d) { return d.x; })
+			        .attr("cy", function(d) { return d.y; })
+			        .attr("r", function(d){
+			        	if(d.samplesCollection){return 5;} 
+		        		else {return 3.5;}
+			        })
+			        .style("fill", function(d) { return "gold"; })
+			        .call(force.drag);
+
+			        $('svg circle').tipsy({ 
+				        gravity: 'w', 
+				        html: true, 
+				        title: function() {
+				          var d = this.__data__, songName = d.songName, artist = d.artistName;
+				          return songName + " by " + artist;
+				        }
+				      });
+
+		        node.on("click", function(d) {
+		        	var youtubeURL = d.songLink;
+		        	console.log(d);
+		        	if(!d.samplesCollection) {
+		        		console.log("here");
+	        			var coreNode = d3.select("#core" + d.level).property("__data__");
+		        		$(".original-song-link iframe").attr("src", coreNode.songLink);
+		        		$(".original-song-link h5").empty().text(d.sampleAppearance.sampler);
+		        		$("#sample-elem").empty().text(d.sampleElement.sampler);
+		        		$(".song-link h5").empty().text(d.sampleAppearance.original)
+		        		$(".hide-content").show();
+		        	} else {
+		        		console.log("there");
+		        		$(".hide-content").hide();
+		        		$(".song-link iframe").attr("height", "200");
+		        	}
+		        	$(".img-link img").attr("src", d.imgLink);
+		        	$(".song-link iframe").attr("src", d.songLink);
+		        	$("#song-name").empty().text(d.songName);
+		        	$("#artist-name").empty().text("by " + d.artistName);
+		        	$("#album-name").empty().text(d.album);
+		        	$("#song-yr").empty().text(d.year);
+		        	$("#label").empty().text(d.recLabel);
+		        	$("#genre").empty().text(d.genre);
+		        	$("#song-panel").show();
+
+
+		        	// $scope.$apply(function(){
+		        	// 	console.log("im applying!")
+			        // 	$scope.imgLink = d.imgLink;
+			        // 	$scope.songName = d.songName;
+			        // 	$scope.artistName = d.artistName;
+			        // 	$scope.album = d.album;
+			        // 	$scope.year = d.year;
+			        // 	$scope.sampleElement = d.sampleElement;
+			        // 	$scope.songLink = $sce.trustAsResourceUrl(youtubeURL);
+			        // 	$scope.recLabel = d.recLabel;
+			        // 	$scope.genre = d.genre;
+			        // 	console.log("aNode", $scope);
+		        	// })
 		        })
-		        .on("mouseenter", function(d){
-		        	d3.selectAll("#" + d.level)
-		        		.attr("stroke", "red")
 
-	        		d3.selectAll("#" + "text" + d.level)
-	        			.style("visibility", "visible")
-		        })
-		        .on("mouseleave", function(d){
-		        	d3.selectAll("#" + d.level)
-		        		.attr("stroke", "null")
+		        var nodeLabel = svg.selectAll("text")
+				   .data(nodes)
+				   .enter()
+				   .append("text")
+				   .text(function(d) {
+				        if(d.samplesCollection) return d.songName;
+				        else return d.originalSong;
+				   })
+				   .attr("x", function(d){return d.x})
+				   .attr("y", function(d){return d.y})
+				   .attr("id", function(d) {return "text" + d.level})
+				   .attr("fill", "grey")
+				   .style("visibility", "hidden");
 
-	        		d3.selectAll("#" + "text" + d.level)
-	        			.style("visibility", "hidden")
-		        })
-		        .style("fill", function(d) { return "gold"; })
-		        .call(force.drag);
 
-	        node.on("click", function(d) {
-	        	var youtubeURL = d.songLink;
-	        	console.log(youtubeURL);
-	        	$scope.$apply(function(){
-	        		console.log("im applying!")
+			    svg.on("mousemove", function() {
+			      fisheye.focus(d3.mouse(this));
 
-		        	console.log("1st", $scope);
-		        	$scope.imgLink = d.imgLink;
-		        	$scope.songName = d.songName;
-		        	$scope.artistName = d.artistName;
-		        	$scope.ft = d.ft.join(", ")
-		        	$scope.album = d.album;
-		        	$scope.year = d.year;
-		        	$scope.sampleElement = d.sampleElement;
-		        	$scope.songLink = $sce.trustAsResourceUrl(youtubeURL);
-		        	$scope.recLabel = d.recLabel;
-		        	$scope.genre = d.genre;
-		        	console.log("aNode", $scope);
-	        	})
-	        })
+			      node.each(function(d) { d.fisheye = fisheye(d); })
+			          .attr("cx", function(d) { return d.fisheye.x; })
+			          .attr("cy", function(d) { return d.fisheye.y; })
+			          .attr("r", function(d) { 
+			          	if(d.samplesCollection) return d.fisheye.z * 5;
+			          	else return d.fisheye.z * 3.5;
+			          });
 
-	        var nodeLabel = svg.selectAll("text")
-			   .data(nodes)
-			   .enter()
-			   .append("text")
-			   .text(function(d) {
-			        if(d.samplesCollection) return d.songName;
-			        else return d.originalSong;
-			   })
-			   .attr("x", function(d){return d.x})
-			   .attr("y", function(d){return d.y})
-			   .attr("id", function(d) {return "text" + d.level})
-			   .attr("fill", "grey")
-			   .style("visibility", "hidden");
+			      link.attr("x1", function(d) { return d.source.fisheye.x; })
+			          .attr("y1", function(d) { return d.source.fisheye.y; })
+			          .attr("x2", function(d) { return d.target.fisheye.x; })
+			          .attr("y2", function(d) { return d.target.fisheye.y; });
+			    });		
 
-		    svg.on("mousemove", function() {
-		      fisheye.focus(d3.mouse(this));
+		}, function(error){
+			if(error) return error
+		})
+	}
 
-		      node.each(function(d) { d.fisheye = fisheye(d); })
-		          .attr("cx", function(d) { return d.fisheye.x; })
-		          .attr("cy", function(d) { return d.fisheye.y; })
-		          .attr("r", function(d) { 
-		          	if(d.samplesCollection) return d.fisheye.z * 5;
-		          	else return d.fisheye.z * 3.5;
-		          });
-
-		      link.attr("x1", function(d) { return d.source.fisheye.x; })
-		          .attr("y1", function(d) { return d.source.fisheye.y; })
-		          .attr("x2", function(d) { return d.target.fisheye.x; })
-		          .attr("y2", function(d) { return d.target.fisheye.y; });
-		    });
-
-		
-
-	}, function(error){
-		if(error) return error
-	})
 }]);
 
 
