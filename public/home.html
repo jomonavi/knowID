@@ -2,27 +2,34 @@
 	<div class="col-md-8" id="svg-canvas"></div>
 
 	<div class="col-md-4" id="song-panel" ng-show="true">
-		<div class="info-img">
-			<div class="img-link">
+		<div class="info-img row">
+			<div class="img-link col-md-6">
 				<img src="{{imgLink}}">
 			</div>
-			<div class="song-related-info">
-				<h3>{{songName}}</h3>
-				<h4>{{artistName}}</h4>
-				<h4>{{album}}</h4>
-				<h5>{{year}}</h5>
+			<div class="song-related-info col-md-6">
+				<h5 id="song-name">{{songName}}</h5>
+				<h6 id="artist-name">{{artistName}}</h6>
+				<h6 id="album-name">{{album}}</h6>
+				<h6 id="song-yr">{{year}}</h6>
+			</div>
+		</div>
+
+		<div class="hide-content">
+			<h3 id="sample-elem">{{sampleElement}}</h3>
+			<div class="original-song-link">
+				<iframe width="325" height="140" src=""></iframe>
+				<h5>{{sampleAppearance.sampler}}</h5>
 			</div>
 		</div>
 
 		<div class="song-link">
-			<h2>{{sampleElement}}</h2>
-			<iframe width="350" height="275" src="{{songLink}}"></iframe>
+			<iframe width="325" height="140" src=""></iframe>
+			<h5 class="hide-content">{{sampleAppearance.original}}</h5>
 		</div>
 
-		<div class="label-genre-yr">
-			<h3>{{recLabel}}</h3>
-			<h3>{{genre}}</h3>
-			<h3></h3>
+		<div class="label-genre">
+			<h6 id="label">{{recLabel}}</h6>
+			<h6 id="genre">{{genre}}</h6>
 		</div>
 	</div>
 </div>
