@@ -20,7 +20,10 @@ app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $
 		d3.select("svg").remove();
 		var artistQ = $scope.query.split(" ").join("-");
 		$http.post('/home', {artist: artistQ}).then(function(allNodes){
-			
+			console.log(allNodes.data);
+			if(!Array.isArray(allNodes.data)){
+				alert("Check the spelling on your search!");
+			}
 			var nodeArr = [], linkArr = [], sliceStart;
 			allNodes.data.forEach(function(node, idx){
 				node.level = "core" + idx, node.isParent = true;		
@@ -194,7 +197,8 @@ app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $
 			    });		
 
 		}, function(error){
-			if(error) return error
+			alert("Check the spelling of your search");
+			_handleError(error);
 		})
 	}
 

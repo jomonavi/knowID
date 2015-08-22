@@ -25,7 +25,7 @@ router.post('/home', function(req, res, next){
 					songLinks.push(aSong.children[0].attribs.href);
 				})
 			}, function(error){
-				console.log(error)
+				res.send(error)
 				return;
 			})
 			.then(function(){
@@ -60,7 +60,8 @@ router.post('/home', function(req, res, next){
 								songNode.producers.push($(this).text());
 							});
 						}, function(error){
-							console.log(error);
+							res.send(error);
+							return;
 						})
 						.then(function(){
 							async.map(finalPageLink, function(aPageLink, callback){
@@ -134,29 +135,30 @@ router.post('/home', function(req, res, next){
 										sampleNode.songLink = $(".sampleVideoRight").last().find("iframe").attr("src");
 
 									}, function(error){
-										console.log(error);
+										res.send(error);
+										return;
 									})
 									.then(function(){
 									    callback(null, sampleNode);
 									}, function(error){
-									    console.log(error);
+									    res.send(error)
+									    return;
 									})
 							}, function(err, results){
 								songNode.samplesCollection = results;
 								callback(null, songNode);
 							})
-						}, function(){
-							throw new Error("it failed");
+						}, function(error){
+							res.send(error);
+							return;
 						})
 				}, function(err, results){
 					if(err) console.log(error);
 					res.send(results);
-					// results.forEach(function(song){
-					// 	arr.push(song);
-					// });
 				})
-			}, function(){
-				throw new Error("It failed");
+			}, function(error){
+				res.send(error);
+				return;
 			})
 		page ++;
 	}
