@@ -6,9 +6,6 @@ var async = require('async');
 
 var router = express.Router();
 
-require('../models/nodes');
-var MusicNode = mongoose.model('MusicNode');
-
 router.post('/home', function(req, res, next){
 	console.log(req.body.artist);
 	var artist = req.body.artist;
