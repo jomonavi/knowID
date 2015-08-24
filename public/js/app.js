@@ -122,11 +122,20 @@ app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $
 				      });
 
 		        node.on("click", function(d) {
-		        	var youtubeURL = d.songLink.split("http").join("https");
+		        	if(d.songLink.indexOf("https") === -1){
+		        		var songURL = d.songLink.split("http").join("https");
+		        	} else {
+		        		var songURL = d.songLink;
+		        	}
 		        	var imgURL = d.imgLink.split("http").join("https");
 		        	if(!d.samplesCollection) {
 	        			var coreNode = d3.select("#core" + d.level).property("__data__");
-		        		$(".original-song-link iframe").attr("src", coreNode.songLink.split("http").join("https"));
+	        			if(coreNode.songLink.indexOf("https") === -1){
+			        		var songURLCore = coreNode.songLink.split("http").join("https");
+			        	} else {
+			        		var songURLCore = coreNode.songLink;
+			        	}
+		        		$(".original-song-link iframe").attr("src", songURLCore);
 		        		$(".original-song-link h5").empty().text(d.sampleAppearance.sampler);
 		        		$("#sample-elem").empty().text(d.sampleElement.sampler);
 		        		$(".song-link h5").empty().text(d.sampleAppearance.original)
@@ -136,7 +145,7 @@ app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $
 		        		$(".song-link iframe").attr("height", "200");
 		        	}
 		        	$(".img-link img").attr("src", imgURL);
-		        	$(".song-link iframe").attr("src", d.songLink.split("http").join("https"));
+		        	$(".song-link iframe").attr("src", songURL);
 		        	$("#song-name").empty().text(d.songName);
 		        	$("#artist-name").empty().text("by " + d.artistName);
 		        	$("#album-name").empty().text(d.album);
