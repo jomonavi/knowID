@@ -7,7 +7,6 @@ var async = require('async');
 var router = express.Router();
 
 router.post('/home', function(req, res, next){
-	console.log(req.body.artist);
 	var artist = req.body.artist;
 	var arr = [];
 	var page = 1

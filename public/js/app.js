@@ -20,7 +20,6 @@ app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $
 		d3.select("svg").remove();
 		var artistQ = $scope.query.split(" ").join("-");
 		$http.post('/home', {artist: artistQ}).then(function(allNodes){
-			console.log(allNodes.data);
 			if(!Array.isArray(allNodes.data)){
 				alert("Check the spelling on your search!");
 			}
@@ -125,9 +124,7 @@ app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $
 		        node.on("click", function(d) {
 		        	var youtubeURL = d.songLink.split("http").join("https");
 		        	var imgURL = d.imgLink.split("http").join("https");
-		        	console.log(d);
 		        	if(!d.samplesCollection) {
-		        		console.log("here");
 	        			var coreNode = d3.select("#core" + d.level).property("__data__");
 		        		$(".original-song-link iframe").attr("src", coreNode.songLink.split("http").join("https"));
 		        		$(".original-song-link h5").empty().text(d.sampleAppearance.sampler);
@@ -135,7 +132,6 @@ app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $
 		        		$(".song-link h5").empty().text(d.sampleAppearance.original)
 		        		$(".hide-content").show();
 		        	} else {
-		        		console.log("there");
 		        		$(".hide-content").hide();
 		        		$(".song-link iframe").attr("height", "200");
 		        	}
