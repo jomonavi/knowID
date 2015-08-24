@@ -123,7 +123,8 @@ app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $
 				      });
 
 		        node.on("click", function(d) {
-		        	var youtubeURL = d.songLink;
+		        	var youtubeURL = d.songLink.split("http").join("https");
+		        	var imgURL = d.imgLink.split("http").join("https");
 		        	console.log(d);
 		        	if(!d.samplesCollection) {
 		        		console.log("here");
@@ -138,7 +139,7 @@ app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $
 		        		$(".hide-content").hide();
 		        		$(".song-link iframe").attr("height", "200");
 		        	}
-		        	$(".img-link img").attr("src", d.imgLink);
+		        	$(".img-link img").attr("src", imgURL);
 		        	$(".song-link iframe").attr("src", d.songLink);
 		        	$("#song-name").empty().text(d.songName);
 		        	$("#artist-name").empty().text("by " + d.artistName);
