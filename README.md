@@ -10,4 +10,7 @@ Some additions that I'd like to work on are extending the amount of songs per ar
 # Screenshot
 ![Alt text](https://github.com/jomonavi/knowID/blob/master/public/images/%20screenshot.png)
 
+# Contributor
+Jomonavi Chokor: [Github](https://github.com/jomonavi/) | [LinkedIn](https://www.linkedin.com/in/jomonavichokor)
+
 
