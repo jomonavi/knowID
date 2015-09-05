@@ -1,29 +1,8 @@
-'use strict';
-var app = angular.module('app', ['ngRoute', 'ngResource'])
+app.factory('NodesFactory', function($http){
+	return {
+		getNodes = function(payload){
 
-app.config(['$routeProvider', function($routeProvider) {
-  	$routeProvider
-    	.when('/', {
-      		templateUrl: 'home.html',
-          controller: 'HomeCtrl'
-    	})
-    	.otherwise({
-      		redirectTo: '/'
-    	});
-}]);
-
-
-app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $sce) {
-
-	$scope.query = {
-		page: page || 1,
-		artist: null
-	}
-
-	$scope.getArtist = function() {
-		d3.select("svg").remove();
-		var artistQ = $scope.query.artist.split(" ").join("-");
-		$http.post('/home', {artist: artistQ}).then(function(allNodes){
+			$http.post('/home', {artist: payload}).then(function(allNodes){
 			if(!Array.isArray(allNodes.data)){
 				alert("Check the spelling on your search!");
 			}
@@ -157,21 +136,6 @@ app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $
 		        	$("#label").empty().text(d.recLabel);
 		        	$("#genre").empty().text(d.genre);
 		        	$("#song-panel").show();
-
-
-		        	// $scope.$apply(function(){
-		        	// 	console.log("im applying!")
-			        // 	$scope.imgLink = d.imgLink;
-			        // 	$scope.songName = d.songName;
-			        // 	$scope.artistName = d.artistName;
-			        // 	$scope.album = d.album;
-			        // 	$scope.year = d.year;
-			        // 	$scope.sampleElement = d.sampleElement;
-			        // 	$scope.songLink = $sce.trustAsResourceUrl(youtubeURL);
-			        // 	$scope.recLabel = d.recLabel;
-			        // 	$scope.genre = d.genre;
-			        // 	console.log("aNode", $scope);
-		        	// })
 		        })
 
 		        var nodeLabel = svg.selectAll("text")
@@ -213,11 +177,4 @@ app.controller('HomeCtrl', ['$scope', '$http', "$sce", function($scope, $http, $
 			_handleError(error);
 		})
 	}
-
-}]);
-
-
-function _handleError(response) {
-  // TODO: Do something here. Probably just redirect to error page
-  console.log('%c ' + response, 'color:red'); 
-}
+})

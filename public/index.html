@@ -15,7 +15,7 @@
             <div class="col-lg-6" id="search-form">
               <form ng-controller="HomeCtrl" name="artist">
                   <div class="input-group">
-                    <input type="text" class="form-control" ng-minlength="2" ng-model="query" name="query"placeholder="Enter an artist...">
+                    <input type="text" class="form-control" ng-minlength="2" ng-model="query.artist" name="query"placeholder="Enter an artist...">
                     <span class="input-group-btn">
                       <button class="btn btn-default" ng-click="getArtist()" type="button">Go!</button>
                     </span>

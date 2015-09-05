@@ -14,6 +14,11 @@ ul.nav.nav-pills {
   margin-right: 0px;*/
 }
 
+#navigation {
+	display: none;
+	text-align: center;
+}
+
 #search-form {
 	float: right;
 	width: 30%;
