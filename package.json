@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha ./test.js -w",
     "populate": "node ./bin/populate_db",
     "start": "node ./bin/www"
   },
@@ -20,5 +20,9 @@
     "mongoose-post-find": "0.0.2",
     "morgan": "^1.6.1",
     "serve-favicon": "^2.3.0"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4"
   }
 }

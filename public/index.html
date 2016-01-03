@@ -5,17 +5,18 @@
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<title>NoID</title>
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/flatly/bootstrap.min.css"/>
-		<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-	</head>
+  		<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/flatly/bootstrap.min.css"/>
+  		<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+      <link rel="stylesheet" type="text/css" href="/css/style.css">
+  </head>
 
-  	<body class="container">
-    	<ul class="nav nav-pills">
-      		<li class="active"><a href="#">Home</a></li>
+    <body class="container">
+      <ul class="nav nav-pills">
+          <li class="active"><a href="#">Home</a></li>
             <div class="col-lg-6" id="search-form">
               <form ng-controller="HomeCtrl" name="artist">
                   <div class="input-group">
-                    <input type="text" class="form-control" ng-minlength="2" ng-model="query.artist" name="query"placeholder="Enter an artist...">
+                    <input type="text" class="form-control" ng-minlength="2" ng-model="query" name="query"placeholder="Enter an artist...">
                     <span class="input-group-btn">
                       <button class="btn btn-default" ng-click="getArtist()" type="button">Go!</button>
                     </span>
@@ -23,17 +24,17 @@
                     <span style="color:red;" ng-show="artist.query.$error.minlength"><font>Spelling must be precise. Omit any dashes.</span>
               </form>
             </div><!-- /.col-lg-6 -->
-    	</ul>
-
-    	<div ng-view></div>
-    	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.js"></script>
-		<script src="//code.angularjs.org/1.2.25/angular-route.js"></script>
-		<script src="//code.angularjs.org/1.2.25/angular-resource.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="js/jquery.tipsy.js"></script>
-    <script src="js/d3/d3.min.js"></script>
-    <script src="js/fisheye.js"></script>
-		<script src="js/app.js"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css">
+      </ul>
+      <div ng-view></div>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.js"></script>
+      <script src="//code.angularjs.org/1.2.25/angular-route.js"></script>
+      <script src="//code.angularjs.org/1.2.25/angular-resource.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+      <script src="js/jquery.tipsy.js"></script>
+      <script src="js/d3/d3.min.js"></script>
+      <script src="js/fisheye.js"></script>
+      <script src="js/app.js"></script>
+      <script src="js/nodesFactory.js"></script>
+      <script src="js/mainCtrl.js"></script>
   	</body>
 </html>

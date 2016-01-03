@@ -1,5 +1,5 @@
 body {
-  background: url('/images/background.png');
+  background: url('../images/galaxy.jpg');
   background-repeat: repeat;
   min-width: 320px;
   margin: 0;
@@ -25,6 +25,11 @@ ul.nav.nav-pills {
 }
 *{
 	margin: 0
+}
+
+#loading{
+	width: 100%;
+	display: none;
 }
 
 #song-panel {
