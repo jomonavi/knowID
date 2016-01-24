@@ -1,0 +1,16 @@
+<div class="about">
+	<header>
+		<h1>knowID</h1>
+	</header>
+
+	<section>
+		<p>KnowID is an application that allows you to trace the genealogy of music sampling through a network graph.</p>
+
+		<p>
+			It then uses D3.js to create a network graph showing how songs are layered with various samples from other songs, maybe incorporating a guitar riff or a drum loop. Each vertex on the graph is clickable, allowing you to play both songs or see the relevant musical element that relates the two songs and general info surrounding the song.
+		</p>
+		<p>
+			It is a dynamic application that allows you to input any given artist, and then this request is sent of to an api endpoint of a webscraper I created to collect data from whosampled.com, due to them not having any public APIs for their data. This process takes quite a bit of time, due to having to crawl through upwards of 100+ pages, depending on the artist, but the result is a 3 level deep network graph that relates your input artist's song with all the samples elements that went into it, which then relates all the other artists that have used the same sample as your given artist. 
+		</p>
+	</section>	
+</div>

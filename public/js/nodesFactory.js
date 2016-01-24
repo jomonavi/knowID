@@ -7,7 +7,7 @@ app.factory('NodesFactory', function($http, $sce){
 
 	Array.prototype.getIndexBy = function (name, value) {
 	    for (var i = 0; i < this.length; i++) {
-	        if (this[i][name] == value) {
+	        if (this[i][name] === value) {
 	            return i;
 	        }
 	    }
@@ -23,17 +23,21 @@ app.factory('NodesFactory', function($http, $sce){
 					alert("Check the spelling on your search!");
 				}
 
-				var nodeArr = [], linkArr = [], sliceStart;
+				var nodeArr = [], 
+					linkArr = [], 
+					sliceStart;
 				allNodes.data.forEach(function(node, idx){
-					node.level = "core" + idx, node.isParent = true;		
-					node.samplesCollection.forEach(function(aNode, idex){
-		        		aNode.level = idx;
-		        		aNode.branchRef = "branch" + idex;
-		        		aNode.otherSamplers.forEach(function(branch, i){
-		        			branch.original = aNode.songName;
-		        			branch.leafLevel = idx;
-		        			if(branch.songName === node.songName){
-		        		 		aNode.otherSamplers.splice(i, 1);
+					node.level = "core" + idx; 
+					node.isParent = true;		
+					node.samplesCollection.forEach(function(innerLeaf, idex){
+		        		innerLeaf.level = idx;
+		        		innerLeaf.branchRef = "branch" + idex;
+		        		innerLeaf.otherSamplers.forEach(function(outerLeaf, i){
+		        			outerLeaf.original = innerLeaf.songName;
+		        			outerLeaf.leafLevel = idex;
+		        			outerLeaf.parentNode = innerLeaf;
+		        			if(outerLeaf.songName === node.songName){
+		        				outerLeaf.toSplice = true;
 		        			}
 		        		 })
 		        	});
@@ -51,15 +55,18 @@ app.factory('NodesFactory', function($http, $sce){
 						linkArr.push(aLink);
 					}
 					node.samplesCollection.forEach(function(sampleNode){
-						console.log(nodeArr.length, sampleNode.otherSamplers);
+						var rootNodeIdx = sampleNode.otherSamplers.getIndexBy("songName", node.songName);
+						sampleNode.otherSamplers.splice(rootNodeIdx, 1);
 						Array.prototype.splice.apply(nodeArr, [nodeArr.length, 0].concat(sampleNode.otherSamplers));
 					});
 				});
 
+				nodeArr = nodeArr.filter(function(node, idx){
+					return !node.toSplice;
+				})
+
 				nodeArr.forEach(function(node, idx){
-					console.log("it's failing here? node.orig is here", node.original);
 					if(node.original){
-						console.log("another thing", node.original);
 						var sourcePos = nodeArr.getIndexBy("songName", node.original);
 
 						var aLink = {
@@ -132,12 +139,23 @@ app.factory('NodesFactory', function($http, $sce){
 			        .data(nodes)
 			      	.enter().append("circle")
 			        .attr("class", "node")
-			        .attr("id", function(d){return d.level})
+			        .attr("id", function(d){
+			        	if(d.isParent){
+			        		return d.level;
+			        	} else if(d.branchRef) {
+			        		return d.branchRef;
+			        	}
+			        })
 			        .attr("cx", function(d) { return d.x; })
 			        .attr("cy", function(d) { return d.y; })
 			        .attr("r", function(d){
-			        	if(d.samplesCollection){return 5;} 
-		        		else {return 3.5;}
+			        	if(d.samplesCollection){
+			        		return 5;
+			        	} else if(d.original){
+		        			return 3.5
+			        	} else {
+			        		return 3.5;
+			        	}
 			        })
 			        .style("fill", function(d) { return "gold"; })
 			        .call(force.drag);
@@ -146,7 +164,9 @@ app.factory('NodesFactory', function($http, $sce){
 			        gravity: 'w', 
 			        html: true, 
 			        title: function() {
-			          var d = this.__data__, songName = d.songName, artist = d.artistName;
+			          var d = this.__data__, 
+			          songName = d.songName, 
+			          artist = d.artistName;
 			          return songName + " by " + artist;
 			        }
 			      });
@@ -158,12 +178,24 @@ app.factory('NodesFactory', function($http, $sce){
 		        		var songURL = d.songLink;
 		        	}
 		        	var imgURL = d.imgLink.split("http").join("https");
-		        	if(!d.samplesCollection) {
+		        	if(d.branchRef) {
 	        			var coreNode = d3.select("#core" + d.level).property("__data__");
 	        			if(coreNode.songLink.indexOf("https") === -1){
 			        		var songURLCore = coreNode.songLink.split("http").join("https");
 			        	} else {
 			        		var songURLCore = coreNode.songLink;
+			        	}
+		        		$(".original-song-link iframe").attr("src", songURLCore);
+		        		$(".original-song-link h5").empty().text(d.sampleAppearance.sampler);
+		        		$("#sample-elem").empty().text(d.sampleElement.sampler);
+		        		$(".song-link h5").empty().text(d.sampleAppearance.original)
+		        		$(".hide-content").show();
+		        	} else if(d.leafLevel){
+		        		var innerLeafNode = d.parentNode;
+	        			if(innerLeafNode.songLink.indexOf("https") === -1){
+			        		var songURLCore = innerLeafNode.songLink.split("http").join("https");
+			        	} else {
+			        		var songURLCore = innerLeafNode.songLink;
 			        	}
 		        		$(".original-song-link iframe").attr("src", songURLCore);
 		        		$(".original-song-link h5").empty().text(d.sampleAppearance.sampler);

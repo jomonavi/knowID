@@ -1,35 +1,63 @@
 body {
-  background: url('../images/galaxy.jpg');
+  /*background: url('../images/galaxy.jpg');*/
   background-repeat: repeat;
   min-width: 320px;
   margin: 0;
 }
-ul.nav.nav-pills {
-  margin: 10px 0;
-  background-color: #fff;
-}
-.container {
-  width: 100%;
- /* margin-left: 0px;
-  margin-right: 0px;*/
+
+nav.know-id-navbar{
+	background: #333;
+	margin: 0 auto;
 }
 
-#navigation {
-	display: none;
-	text-align: center;
+ul {
+	list-style-type: none;
+	overflow: hidden;
+	margin-bottom: 5px;
 }
 
-#search-form {
-	float: right;
-	width: 30%;
+li {
+	float: left;
 }
-*{
-	margin: 0
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+
+.knowid-search-bar {
+	padding: 10px 16px;
+}
+
+.search-bar {
+	float: left;
+}
+
+
+
+.content-container {
+	margin: 0px 10px;
+}
+
+.about {
+	margin: 0px 10px;
 }
 
 #loading{
-	width: 100%;
+	margin: 0 auto;
 	display: none;
+}
+
+#loading img {
+	display: block;
+	margin: 0 auto;
 }
 
 #song-panel {
@@ -38,6 +66,10 @@ ul.nav.nav-pills {
 .song-related-info *{
 	margin: 2px;
 }
+
+/*
+Tipsy Plugin
+*/
 .tipsy { font-size: 10px; position: absolute; padding: 5px; z-index: 100000; }
 	.tipsy-inner { background-color: #000; color: #FFF; max-width: 200px; padding: 5px 8px 4px 8px; text-align: center; }
 

@@ -1,11 +1,11 @@
-app.controller('HomeCtrl', ['$scope', 'NodesFactory', function($scope, NodesFactory) {
+app.controller('HomeCtrl', ['$scope', 'NodesFactory', '$location', function($scope, NodesFactory, $location) {
 
 	$scope.query;
 	
 	var page = 1;
 	$scope.getArtist = function() {
+		$location.path('/');
 		artistURL = $scope.query;
-		console.log($scope.query);
 		d3.select("svg").remove();
 		NodesFactory.getNodes({artist: artistURL, page: page});
 	}

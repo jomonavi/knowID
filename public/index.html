@@ -10,21 +10,26 @@
       <link rel="stylesheet" type="text/css" href="/css/style.css">
   </head>
 
-    <body class="container">
-      <ul class="nav nav-pills">
-          <li class="active"><a href="#">Home</a></li>
-            <div class="col-lg-6" id="search-form">
+    <body class=>
+      <nav class="know-id-navbar">
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#/about">About</a></li>
+          <ul style="float:right;list-style-type:none;">
+            <li class="knowid-search-bar">
               <form ng-controller="HomeCtrl" name="artist">
-                  <div class="input-group">
-                    <input type="text" class="form-control" ng-minlength="2" ng-model="query" name="query"placeholder="Enter an artist...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" ng-click="getArtist()" type="button">Go!</button>
-                    </span>
-                  </div><!-- /input-group -->
-                    <span style="color:red;" ng-show="artist.query.$error.minlength"><font>Spelling must be precise. Omit any dashes.</span>
-              </form>
-            </div><!-- /.col-lg-6 -->
-      </ul>
+                <input type="text" placeholder="Enter an artist" class="search-bar" ng-minlength="2" ng-model="query">
+                <button class="search-bar" ng-click="getArtist()" type="button">Go</button>
+              </form> 
+            </li>
+          </ul>
+        </ul>
+      </nav>
+
+      <div id="loading" ng-controller="HomeCtrl">
+        <img src="images/loading.gif" ng-controller="HomeCtrl">
+      </div>
+
       <div ng-view></div>
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.js"></script>
       <script src="//code.angularjs.org/1.2.25/angular-route.js"></script>

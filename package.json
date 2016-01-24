@@ -18,6 +18,7 @@
     "mongoose": "^4.1.0",
     "mongoose-post-find": "0.0.2",
     "morgan": "^1.6.1",
+    "request-promise": "^2.0.0",
     "serve-favicon": "^2.3.0"
   },
   "devDependencies": {
