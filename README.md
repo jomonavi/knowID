@@ -8,7 +8,7 @@ It then uses D3.js to create a network graph showing how songs are layered with 
 Some additions that I'd like to work on are extending the amount of songs per artist to beyond 10 of their most popular songs, an improvement of the UI & CSS to make it visually more pleasing, and a more complex network that will relate songs based on their samples. 
 
 # Screenshot
-![Alt text](https://github.com/jomonavi/knowID/blob/master/public/images/%20screenshot1.png)
+![Alt text](https://github.com/jomonavi/knowID/blob/master/public/images/screenshot1.png)
 
 # Contributor
 Jomonavi Chokor: [Github](https://github.com/jomonavi/) | [LinkedIn](https://www.linkedin.com/in/jomonavichokor)
