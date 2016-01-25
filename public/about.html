@@ -1,16 +1,17 @@
-<div>
+<div id="about-page">
 	<header>
 		<h1>knowID</h1>
 	</header>
 
 	<section>
-		<p>KnowID is an application that allows you to trace the genealogy of music sampling through a network graph.</p>
+		<p>KnowID is an application that allows you to trace the genealogy of music sampling through a network graph. I envisioned it as a way to explore and discover new music, based on artists that you already enjoy or know</p>
 
 		<p>
 			It then uses D3.js to create a network graph showing how songs are layered with various samples from other songs, maybe incorporating a guitar riff or a drum loop. Each vertex on the graph is clickable, allowing you to play both songs or see the relevant musical element that relates the two songs and general info surrounding the song.
 		</p>
 		<p>
-			It is a dynamic application that allows you to input any given artist, and then this request is sent of to an api endpoint of a webscraper I created to collect data from whosampled.com, due to them not having any public APIs for their data. This process takes quite a bit of time, due to having to crawl through upwards of 100+ pages, depending on the artist, but the result is a 3 level deep network graph that relates your input artist's song with all the samples elements that went into it, which then relates all the other artists that have used the same sample as your given artist. 
+			It is a dynamic application that allows you to input any given artist. <strong>The query must be spelled correctly and should omit any dashes in the name, instead replacing with a space </strong>, due to the nature of how the data is gathered. This request is sent off to an api endpoint of a webscraper I created to collect data from whosampled.com, due to them not having any public APIs for their data. This process can take quite a bit of time, due to having to crawl through upwards of 150+ pages, depending on the artist, but the result is a 3 level deep network graph that relates your input artist's song with all the samples elements that went into it, which then relates all the other artists that have used the same sample as your given artist. 
 		</p>
+		<p>Your search artist is the central, pink node, all the samples used are the 2nd level gold nodes, and all the other artists that used similar samples are the outermost green nodes. Explore away!</p>
 	</section>	
 </div>

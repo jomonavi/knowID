@@ -9,7 +9,7 @@ app.config(['$routeProvider', function($routeProvider) {
           	controller: 'HomeCtrl'
     	})
     	.when('/about', {
-    		templateUrl: '/about.html',
+    		templateUrl: 'about.html',
     		controller: 'HomeCtrl'
     	})
     	.otherwise({

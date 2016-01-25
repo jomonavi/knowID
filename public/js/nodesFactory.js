@@ -152,13 +152,20 @@ app.factory('NodesFactory', function($http, $sce){
 			        .attr("r", function(d){
 			        	if(d.samplesCollection){
 			        		return 5;
-			        	} else if(d.original){
-		        			return 3.5
 			        	} else {
 			        		return 3.5;
 			        	}
 			        })
-			        .style("fill", function(d) { return "gold"; })
+			        .style("fill", function(d) {
+			        	if(d.isParent){
+			        		return "rgba(215,120,215,.85)";
+			        	} else if(d.leafLevel){
+			        		return "rgba(44,220,70,0.9)"
+			        	}else {
+			        		return "rgba(255,223,0,.85)";
+			        	} 
+			        }).style("stroke", "rgb(51, 51, 51)")
+			        .style("stroke-width", 2)
 			        .call(force.drag);
 
 		        $('svg circle').tipsy({ 
