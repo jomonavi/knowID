@@ -159,7 +159,7 @@ app.factory('NodesFactory', function($http, $sce){
 			        .style("fill", function(d) {
 			        	if(d.isParent){
 			        		return "rgba(215,120,215,.85)";
-			        	} else if(d.leafLevel){
+			        	} else if(d.original){
 			        		return "rgba(44,220,70,0.9)"
 			        	}else {
 			        		return "rgba(255,223,0,.85)";

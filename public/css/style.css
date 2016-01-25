@@ -40,7 +40,9 @@ li a:hover:not(.active) {
 	float: left;
 }
 
-
+.song-frame {
+	margin: 10px auto;
+}
 
 .content-container {
 	margin: 0px 10px;
