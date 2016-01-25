@@ -32,6 +32,7 @@ app.factory('NodesFactory', function($http, $sce){
 					node.samplesCollection.forEach(function(innerLeaf, idex){
 		        		innerLeaf.level = idx;
 		        		innerLeaf.branchRef = "branch" + idex;
+		        		innerLeaf.parentNode = node;
 		        		innerLeaf.otherSamplers.forEach(function(outerLeaf, i){
 		        			outerLeaf.original = innerLeaf.songName;
 		        			outerLeaf.leafLevel = idex;
@@ -172,48 +173,45 @@ app.factory('NodesFactory', function($http, $sce){
 			      });
 
 		        node.on("click", function(d) {
+		        	var imgURL = d.imgLink.split("http").join("https"),
+		        		songURL;
 		        	if(d.songLink.indexOf("https") === -1){
-		        		var songURL = d.songLink.split("http").join("https");
+		        		songURL = d.songLink.split("http").join("https");
 		        	} else {
-		        		var songURL = d.songLink;
+		        		songURL = d.songLink;
 		        	}
-		        	var imgURL = d.imgLink.split("http").join("https");
-		        	if(d.branchRef) {
-	        			var coreNode = d3.select("#core" + d.level).property("__data__");
-	        			if(coreNode.songLink.indexOf("https") === -1){
-			        		var songURLCore = coreNode.songLink.split("http").join("https");
-			        	} else {
-			        		var songURLCore = coreNode.songLink;
-			        	}
-		        		$(".original-song-link iframe").attr("src", songURLCore);
-		        		$(".original-song-link h5").empty().text(d.sampleAppearance.sampler);
-		        		$("#sample-elem").empty().text(d.sampleElement.sampler);
-		        		$(".song-link h5").empty().text(d.sampleAppearance.original)
-		        		$(".hide-content").show();
-		        	} else if(d.leafLevel){
-		        		var innerLeafNode = d.parentNode;
-	        			if(innerLeafNode.songLink.indexOf("https") === -1){
-			        		var songURLCore = innerLeafNode.songLink.split("http").join("https");
-			        	} else {
-			        		var songURLCore = innerLeafNode.songLink;
-			        	}
-		        		$(".original-song-link iframe").attr("src", songURLCore);
-		        		$(".original-song-link h5").empty().text(d.sampleAppearance.sampler);
-		        		$("#sample-elem").empty().text(d.sampleElement.sampler);
-		        		$(".song-link h5").empty().text(d.sampleAppearance.original)
-		        		$(".hide-content").show();
-		        	} else {
-		        		$(".hide-content").hide();
-		        		$(".song-link iframe").attr("height", "200");
-		        	}
+
 		        	$(".img-link img").attr("src", imgURL);
-		        	$(".song-link iframe").attr("src", songURL);
 		        	$("#song-name").empty().text(d.songName);
 		        	$("#artist-name").empty().text("by " + d.artistName);
 		        	$("#album-name").empty().text(d.album);
 		        	$("#song-yr").empty().text(d.year);
 		        	$("#label").empty().text(d.recLabel);
 		        	$("#genre").empty().text(d.genre);
+
+		        	$(".song-link iframe").attr("src", songURL);
+
+		        	if(!d.isParent) {
+	        			var coreNode = d.parentNode;
+	        			if(coreNode.songLink.indexOf("https") === -1){
+			        		var coreNodeURL = coreNode.songLink.split("http").join("https");
+			        	} else {
+			        		var coreNodeURL = coreNode.songLink;
+			        	}
+		        		if(d.branchRef){
+		        			$(".song-link iframe").attr("src", coreNodeURL);
+		        			$(".sample-link iframe").attr("src", songURL);
+		        		} else {
+		        			$(".sample-link iframe").attr("src", coreNodeURL);
+		        		}
+		        		$(".song-link h5").empty().text(d.sampleAppearance.sampler);
+		        		$("#sample-elem").empty().text(d.sampleElement.sampler);
+		        		$(".sample-link h5").empty().text(d.sampleAppearance.original)
+		        		$(".hide-content").show();
+		        	} else {
+		        		$(".hide-content").hide();
+		        	}
+
 		        	$("#song-panel").show();
 		        })
 
