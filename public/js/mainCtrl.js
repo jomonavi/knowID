@@ -4,7 +4,7 @@ app.controller('HomeCtrl', ['$scope', 'NodesFactory', '$location', function($sco
 	
 	var page = 1;
 	$scope.getArtist = function() {
-		$location.path('/');
+		$location.path('/samples');
 		artistURL = $scope.query;
 		d3.select("svg").remove();
 		NodesFactory.getNodes({artist: artistURL, page: page});

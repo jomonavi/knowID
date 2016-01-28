@@ -15,7 +15,6 @@ router.post('/home', function(req, res, next){
 		uri: url,
 		json: true
 	}
-
 	rp(options)
 		.then(function(data){
 			res.send(data);

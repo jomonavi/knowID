@@ -16,7 +16,7 @@ app.factory('NodesFactory', function($http, $sce){
 
 	return {
 		getNodes: function(payload){
-			$('#loading').show();
+			$('#loading').toggle(true);
 			var artistQ = payload.artist.split(" ").join("-");
 			$http.post('/home', {artist: artistQ, page: payload.page}).then(function(allNodes){
 				if(!Array.isArray(allNodes.data)){
@@ -94,7 +94,7 @@ app.factory('NodesFactory', function($http, $sce){
 					.linkDistance(35)
 					.size([width, height]);
 
-				$('#loading').hide();
+				$('#loading').toggle(false);
 
 				var svg = d3.select("#svg-canvas").append("svg")
 					.attr("width", width)
@@ -108,6 +108,23 @@ app.factory('NodesFactory', function($http, $sce){
 				var n = nodes.length;
 
 			    force.nodes(nodes).links(links);
+
+			    links.forEach(function(link, index, list) {
+			        if (typeof nodes[link.source] === 'undefined') {
+			        	console.log("prob node", nodes[link.source]);
+			            console.log('undefined source', link);
+			            link.shouldDelete = true;
+			        }
+			        if (typeof nodes[link.target] === 'undefined') {
+			        	console.log("prob node", nodes[link.target]);
+			            console.log('undefined target', link);
+			            link.shouldDeleteT = true;
+			        }
+			    });
+
+			    links = links.filter(function(link, idx){
+			    	return !link.shouldDelete
+			    });
 
 				// Initialize the positions deterministically, for better results.
 				// nodes.forEach(function(d, i) { d.x = d.y = width / n * i; });

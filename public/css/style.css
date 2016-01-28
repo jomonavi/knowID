@@ -48,12 +48,18 @@ li a:hover:not(.active) {
 	margin: 0px 10px;
 }
 
-#about-page {
- width: 700px;
-  margin: 25px auto;
-  background: rgba(0,0,0,0.5);
-  padding: 10px;
-  color: white;
+.info-desc {
+ 	width: 700px;
+  	margin: 25px auto;
+	background: rgba(0,0,0,0.5);
+  	padding: 10px;
+  	color: white;
+}
+
+.info-desc * {
+	margin: 10px auto;
+	text-align: center;
+	display: block;
 }
 
 strong {
