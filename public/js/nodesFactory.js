@@ -16,7 +16,7 @@ app.factory('NodesFactory', function($http, $sce){
 
 	return {
 		getNodes: function(payload){
-			$('#loading').toggle(true);
+			// $('#loading').show();
 			var artistQ = payload.artist.split(" ").join("-");
 			$http.post('/home', {artist: artistQ, page: payload.page}).then(function(allNodes){
 				if(!Array.isArray(allNodes.data)){
@@ -94,7 +94,6 @@ app.factory('NodesFactory', function($http, $sce){
 					.linkDistance(35)
 					.size([width, height]);
 
-				$('#loading').toggle(false);
 
 				var svg = d3.select("#svg-canvas").append("svg")
 					.attr("width", width)
@@ -106,6 +105,8 @@ app.factory('NodesFactory', function($http, $sce){
 					.attr("height", height);
 
 				var n = nodes.length;
+				
+				$('#loading').hide();
 
 			    force.nodes(nodes).links(links);
 

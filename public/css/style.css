@@ -68,8 +68,8 @@ strong {
 
 #loading{
 	margin: 0 auto;
-	display: none;
-}
+/*	display: none;
+*/}
 
 #loading img {
 	display: block;
